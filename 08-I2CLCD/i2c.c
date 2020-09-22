@@ -38,11 +38,11 @@ void I2CWrite (unsigned char dat)
     for(i=0;i<8;i++)                   // loop 8 times to send 1-byte of data
     {
         SDA_PIN = dat & 0x80;     // Send Bit by Bit on SDA line
-        i2c_Clock();                   // Generate Clock at SCL
+        I2CClock();                   // Generate Clock at SCL
         dat = dat<<1;// Bring the next bit to be transmitted to MSB position
     }
                              
-    i2c_Clock();
+    I2CClock();
 }
 
 unsigned char I2CRead (unsigned char b)
@@ -65,18 +65,18 @@ unsigned char I2CRead (unsigned char b)
 		
     if(b==1)  /*Send the Ack/NoAck depending on the user option*/
     {
-        i2c_Ack();
+        I2CACK();
     }
     else
     {
-        i2c_NoAck();
+        I2CNACK();
     }
 
     return dat;           // Finally return the received Byte*
 }
 
 
-static void i2c_Clock(void)
+static void I2CClock(void)
 {
     delay_us(1);
     SCL_PIN = 1;            // Wait for Some time and Pull the SCL line High
@@ -84,16 +84,16 @@ static void i2c_Clock(void)
     SCL_PIN = 0;            // Pull back the SCL line low to Generate a clock pulse
 }
 
-static void i2c_Ack(void)
+static void I2CACK(void)
 {
     SDA_PIN = 0;        //Pull SDA low to indicate Positive ACK
-    i2c_Clock();    //Generate the Clock
+    I2CClock();    //Generate the Clock
     SDA_PIN = 1;        // Pull SDA back to High(IDLE state)
 }
 
-static void i2c_NoAck(void)
+static void I2CNACK(void)
 {
     SDA_PIN = 1;         //Pull SDA high to indicate Negative/NO ACK
-    i2c_Clock();     // Generate the Clock  
+    I2CClock();     // Generate the Clock  
     SCL_PIN = 1;         // Set SCL 
 }

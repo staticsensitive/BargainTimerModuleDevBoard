@@ -13,8 +13,8 @@ void I2CStop (void);
 void I2CWrite (unsigned char b);
 unsigned char I2CRead (unsigned char b);
 
-static void i2c_Clock(void);
-static void i2c_Ack(void);
-static void i2c_NoAck(void);
+static void I2CClock(void);
+static void I2CACK(void);
+static void I2CNACK(void);
 
 #endif
